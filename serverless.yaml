@@ -9,7 +9,10 @@ provider:
   # environment:
   #   NODE_OPTIONS: --require lambda-wrapper
   # tracing: true
-
+  tracing:
+    apiGateway: true
+    lambda: true
+    
 service: lambda-express
 
 layers:  
