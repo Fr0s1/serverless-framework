@@ -27,13 +27,17 @@
 /**
  * Module dependencies.
  */
-
+const opentelemetrySdk = require("./instrumentation")
 const express = require('serverless-express/express')
 var app = express();
 
 const bodyParser = require("body-parser")
 const swaggerJsdoc = require("swagger-jsdoc")
 const swaggerUi = require("swagger-ui-express")
+
+console.log("Start tracing")
+// Start tracing
+opentelemetrySdk.start()
 
 const options = {
   definition: {
