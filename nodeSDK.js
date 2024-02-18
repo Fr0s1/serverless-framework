@@ -18,31 +18,31 @@ const _tracerConfig = {
     idGenerator: new AWSXRayIdGenerator(),
 }
 
-async function nodeSDKBuilder() {
-    const sdk = new opentelemetry.NodeSDK({
-        textMapPropagator: new AWSXRayPropagator(),
-        instrumentations: [
-            new HttpInstrumentation(),
-            new AwsInstrumentation({
-                suppressInternalInstrumentation: true
-            }),
-        ],
-        resource: _resource,
-        spanProcessor: _spanProcessor,
-        traceExporter: _traceExporter,
-    });
-    sdk.configureTracerProvider(_tracerConfig, _spanProcessor);
+// async function nodeSDKBuilder() {
+const sdk = new opentelemetry.NodeSDK({
+    textMapPropagator: new AWSXRayPropagator(),
+    instrumentations: [
+        new HttpInstrumentation(),
+        new AwsInstrumentation({
+            suppressInternalInstrumentation: true
+        }),
+    ],
+    resource: _resource,
+    spanProcessor: _spanProcessor,
+    traceExporter: _traceExporter,
+});
+sdk.configureTracerProvider(_tracerConfig, _spanProcessor);
 
-    // this enables the API to record telemetry
-    await sdk.start();
-    // sdk.start()
-    // gracefully shut down the SDK on process exit
-    process.on('SIGTERM', () => {
-        sdk.shutdown()
-            .then(() => console.log('Tracing and Metrics terminated'))
-            .catch((error) => console.log('Error terminating tracing and metrics', error))
-            .finally(() => process.exit(0));
-    });
-}
+// this enables the API to record telemetry
+// await sdk.start();
+sdk.start()
+// gracefully shut down the SDK on process exit
+process.on('SIGTERM', () => {
+    sdk.shutdown()
+        .then(() => console.log('Tracing and Metrics terminated'))
+        .catch((error) => console.log('Error terminating tracing and metrics', error))
+        .finally(() => process.exit(0));
+});
+// }
 
-module.exports = { nodeSDKBuilder };
+// module.exports = { nodeSDKBuilder };
