@@ -1,0 +1,30 @@
+plugins:
+  - serverless-express # <- like so
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  memorySize: 512
+  region: ap-northeast-1
+  
+service: lambda-express
+
+layers:
+  express:  
+    path: lib
+    name: serverless-${sls:stage}-express-layer
+
+package:
+  exclude:
+    - node_modules/**
+    - '!node_modules/node-fetch/**'
+
+functions:
+  app:
+    handler: handler.api 
+    events: 
+      - http:
+          method: ANY   
+          path: /{proxy+}
+    layers:
+      - !Ref ExpressLambdaLayer
