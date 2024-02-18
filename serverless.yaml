@@ -6,7 +6,10 @@ provider:
   runtime: nodejs18.x
   memorySize: 512
   region: ap-northeast-1
-  
+  environment:
+    NODE_OPTIONS: --require lambda-wrapper
+  # tracing: true
+
 service: lambda-express
 
 layers:
@@ -28,3 +31,4 @@ functions:
           path: /{proxy+}
     layers:
       - !Ref ExpressLambdaLayer
+    tracing: Active

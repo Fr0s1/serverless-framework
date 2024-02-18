@@ -18,4 +18,4 @@ const sdk = new NodeSDK({
   instrumentations: [getNodeAutoInstrumentations()],
 });
 
-module.exports = sdk
+sdk.start()
